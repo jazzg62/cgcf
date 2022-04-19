@@ -1,5 +1,5 @@
 # 导出项目中有改动的文件
-根据git status的结果，导出项目中有改动的文件
+根据git status的结果，导出项目中有改动的文件。不需要npm install也可运行。
 
 ## 环境
 1. git
@@ -7,7 +7,7 @@
 
 ## 安装
 ```bash
-npm install 
+安装node和git
 ```
 
 ## 如何运行

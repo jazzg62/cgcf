@@ -3,7 +3,7 @@ const process = require("child_process");
 const fs = require("fs");
 
 // git项目路径
-const PROJECT_PATH = "D:\\Desktop\\gitFiles\\shop.zhengan-food.com";
+const PROJECT_PATH = "D:\\Desktop\\test";
 // diff文件路径
 const CURRENT_PATH = __dirname;
 const CHANGED_DESC_NAME = "changed_file.txt";
