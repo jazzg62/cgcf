@@ -30,7 +30,7 @@ function main() {
     new Promise((resolve, reject) => {
         // 创建临时的文件
         process.exec(
-            `cd ${PROJECT_PATH} && git status > "${DIFF}"`,
+            `cd \\D ${PROJECT_PATH} && git status > "${DIFF}"`,
             (error) => {
                 if (error) {
                     reject(error);
