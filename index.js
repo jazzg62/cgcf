@@ -59,10 +59,8 @@ function clear(path){
     if(!fs.existsSync(path))
         return ;
     log('clear path:', path);
-    return ;
     try{
-        fs.rmdirSync(path);
-        fs.mkdirSync(path);
+        fs.rmSync(path, { recursive: true, force: true });
     }catch(e){
         log(e);
     }
@@ -75,6 +73,7 @@ function main(){
         let project_path = item['project_path'];
         let project_name = item['name'];
         let target_path = item['target_path'];
+        clear(target_path);
         new Promise((resolve, reject) => {
             if(!fs.existsSync(project_path))
                 reject("project path is not exists");
@@ -90,7 +89,6 @@ function main(){
         })
         .then((data) => {
             let res = parse(data);
-            log("total files:", res.length);
             let source_file = "", target_file = "";
             for (let i in res) {
                 source_file = path.resolve(project_path, res[i]);
@@ -98,6 +96,8 @@ function main(){
                 log(`[${project_name}] copy [${Number(i)+1}]: ${source_file} to ${target_file}`);
                 copy(source_file, target_file);
             }
+            log("total files:", res.length);
+            log("target path:", target_path);
         })
         .catch((e) => {
             log(e);
