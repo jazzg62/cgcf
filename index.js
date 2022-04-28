@@ -66,43 +66,26 @@ function clear(path){
     }
 }
 
-function main(){
-    const config = require('./config')
-    log(`total projects: ${config.length}`);
-    for(let item of config){
-        let project_path = item['project_path'];
-        let project_name = item['name'];
-        let target_path = item['target_path'];
-        clear(target_path);
-        new Promise((resolve, reject) => {
-            if(!fs.existsSync(project_path))
-                reject("project path is not exists");
-            let ps = process.exec(
-                `cd /D ${project_path} && git status `,
-                (error) => {
-                    if (error) reject(error);
-                }
-            );
-            ps.stdout.on('data',function(data){
-                resolve(data);
-            })
-        })
-        .then((data) => {
-            let res = parse(data);
-            let source_file = "", target_file = "";
-            for (let i in res) {
-                source_file = path.resolve(project_path, res[i]);
-                target_file= path.join(target_path, res[i]);
-                log(`[${project_name}] copy [${Number(i)+1}]: ${source_file} to ${target_file}`);
-                copy(source_file, target_file);
+function getGitRepoChanges(path){
+    return new Promise((resolve, reject) => {
+        if(!fs.existsSync(path))
+            reject("project path is not exists");
+        let ps = process.exec(
+            `cd /D ${path} && git status `,
+            (error) => {
+                if (error) reject(error);
             }
-            log("total files:", res.length);
-            log("target path:", target_path);
+        );
+        ps.stdout.on('data',function(data){
+            resolve(parse(data));
         })
-        .catch((e) => {
-            log(e);
-        });
-    }
+    })
 }
 
-main();
+module.exports = {
+    copy,
+    log,
+    parse,
+    clear,
+    getGitRepoChanges
+}
