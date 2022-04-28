@@ -21,6 +21,7 @@ async function main(){
         }
         cgcf.log("total files:", res.length);
         cgcf.log("target path:", target_path);
+        cgcf.openInExplorer(target_path);
     }
 }
 

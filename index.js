@@ -82,10 +82,15 @@ function getGitRepoChanges(path){
     })
 }
 
+function openInExplorer(path){
+    process.exec(`start explorer ${path}`);
+}
+
 module.exports = {
     copy,
     log,
     parse,
     clear,
-    getGitRepoChanges
+    getGitRepoChanges,
+    openInExplorer
 }
