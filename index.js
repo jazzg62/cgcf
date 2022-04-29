@@ -11,13 +11,45 @@ const is_log = true;
  * @returns 
  */
 function copy(src, dst) {
-    let dirname = path.dirname(dst);
+    // 处理文件夹
+    if(dst.endsWith("/") || dst.endsWith("\\")){
+        fs.mkdirSync(dst, { recursive: true })
+        copyFolder(src, dst);
+        return ;
+    }
+    // 处理文件
+    const dirname = path.dirname(dst);
     // 创建对应的文件夹
-    if (!fs.existsSync(dirname)) fs.mkdirSync(dirname, { recursive: true });
-    // 不处理文件夹
-    if (dst.endsWith("/")) return;
-    if (dst.endsWith("\\")) return;
+    if (!fs.existsSync(dst)) fs.mkdirSync(dirname, { recursive: true });
     fs.copyFileSync(src, dst);
+}
+
+/**
+ * 复制文件夹
+ * @param {String} source 源文件夹路径
+ * @param {String} destination 目标文件夹路径
+ */
+ function copyFolder(srcDir, desDir) {
+    fs.readdir(srcDir, { withFileTypes: true }, (err, files) => {
+        for (const file of files) {
+            //判断是否为文件夹
+            if (file.isDirectory()) {
+                const dirS = path.resolve(srcDir, file.name);
+                const dirD = path.resolve(desDir, file.name);
+                //判断是否存在dirD文件夹
+                if (!fs.existsSync(dirD)) {
+                    fs.mkdir(dirD, (err) => {
+                        if (err) console.log(err);
+                    });
+                }
+                arguments.callee(dirS, dirD);
+            } else {
+                const srcFile = path.resolve(srcDir, file.name);
+                const desFile = path.resolve(desDir, file.name);
+                fs.copyFileSync(srcFile, desFile);
+            }
+        }
+    })
 }
 
 /**
@@ -66,6 +98,11 @@ function clear(path){
     }
 }
 
+/**
+ * 获取git项目的改变文件列表
+ * @param {String} path 
+ * @returns {Array}
+ */
 function getGitRepoChanges(path){
     return new Promise((resolve, reject) => {
         if(!fs.existsSync(path))
@@ -82,6 +119,10 @@ function getGitRepoChanges(path){
     })
 }
 
+/**
+ * 在文件浏览器中打开
+ * @param {*} path 
+ */
 function openInExplorer(path){
     process.exec(`start explorer ${path}`);
 }
