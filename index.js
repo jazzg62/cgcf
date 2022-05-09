@@ -1,5 +1,5 @@
 const path = require("path");
-const process = require("child_process");
+const {execSync} = require('child_process');
 const fs = require("fs");
 
 const is_log = true;
@@ -107,15 +107,8 @@ function getGitRepoChanges(path){
     return new Promise((resolve, reject) => {
         if(!fs.existsSync(path))
             reject("project path is not exists");
-        let ps = process.exec(
-            `cd /D ${path} && git status `,
-            (error) => {
-                if (error) reject(error);
-            }
-        );
-        ps.stdout.on('data',function(data){
-            resolve(parse(data));
-        })
+        let data = execSync(`cd /D ${path} && git status`).toString();
+        resolve(parse(data));
     })
 }
 
@@ -124,7 +117,7 @@ function getGitRepoChanges(path){
  * @param {*} path 
  */
 function openInExplorer(path){
-    process.exec(`start explorer ${path}`);
+    execSync(`start explorer ${path}`);
 }
 
 module.exports = {

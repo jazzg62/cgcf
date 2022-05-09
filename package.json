@@ -1,6 +1,6 @@
 {
   "name": "cgcf",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "copy git changed file",
   "main": "index.js",
   "scripts": {
