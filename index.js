@@ -104,12 +104,10 @@ function clear(path){
  * @returns {Array}
  */
 function getGitRepoChanges(path){
-    return new Promise((resolve, reject) => {
-        if(!fs.existsSync(path))
-            reject("project path is not exists");
-        let data = execSync(`cd /D ${path} && git status`).toString();
-        resolve(parse(data));
-    })
+    if(!fs.existsSync(path))
+        return [];
+    let data = execSync(`cd /D ${path} && git status`).toString();
+    return parse(data);
 }
 
 /**
