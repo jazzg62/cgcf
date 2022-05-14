@@ -72,13 +72,22 @@ function parse(statusText){
             res.push(el);
         }
     })
+    let del = [];
     for (let i in res) {
+        if(/deleted:    /.test(res[i]))
+            del.push(i);
         // 去掉\t
         res[i] = res[i].replace(/\t/g, "");
         // 去掉 modified
         res[i] = res[i].replace(/modified:   /g, "");
         // 去除 ../
         res[i] = res[i].replace(/\.\.\//g, "");
+    }
+    // 处理删除的文件
+    let t = 0;
+    for(let i in del){
+        res.splice(del[i]-t, 1);
+        t++;
     }
     return res;
 }
