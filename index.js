@@ -115,7 +115,7 @@ function getGitRepoChanges(path){
  * @param {*} path 
  */
 function openInExplorer(path){
-    execSync(`start explorer ${path}`);
+    execSync(`start "" "${path}"`);
 }
 
 module.exports = {
