@@ -80,6 +80,8 @@ function parse(statusText){
         res[i] = res[i].replace(/\t/g, "");
         // 去掉 modified
         res[i] = res[i].replace(/modified:   /g, "");
+        // 去掉 new file
+        res[i] = res[i].replace(/new file:   /g, "");
         // 去除 ../
         res[i] = res[i].replace(/\.\.\//g, "");
     }
