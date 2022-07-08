@@ -2,7 +2,7 @@ const path = require("path");
 const {execSync} = require('child_process');
 const fs = require("fs");
 
-const is_log = true;
+const is_log = false;
 
 /**
  * 复制文件
@@ -26,8 +26,8 @@ function copy(src, dst) {
 
 /**
  * 复制文件夹
- * @param {String} source 源文件夹路径
- * @param {String} destination 目标文件夹路径
+ * @param {String} srcDir 源文件夹路径
+ * @param {String} desDir 目标文件夹路径
  */
  function copyFolder(srcDir, desDir) {
     fs.readdir(srcDir, { withFileTypes: true }, (err, files) => {
@@ -61,7 +61,7 @@ function log() {
 
 /**
  * 解析diff文本
- * @param {*} statusText 
+ * @param {String} statusText 
  * @returns {Array}
  */
 function parse(statusText){
@@ -123,10 +123,14 @@ function getGitRepoChanges(path){
 
 /**
  * 在文件浏览器中打开
- * @param {*} path 
+ * @param {String} path 
+ * @returns {Boolean}
  */
 function openInExplorer(path){
+    if(!fs.existsSync(path))
+        return false;
     execSync(`start "" "${path}"`);
+    return true;
 }
 
 module.exports = {
